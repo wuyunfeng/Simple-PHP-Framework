@@ -19,6 +19,7 @@ class SimpleLogger
         $logFile = BASE_PATH . $file;
         if (!file_exists($logFile)) {
             touch($logFile);
+            chmod($logFile,0666);
         }
         $method = $_SERVER['REQUEST_METHOD'];
         $post_content = '';

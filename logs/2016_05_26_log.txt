@@ -1,2 +1,3 @@
-2016-05-26 15:00:57	127.0.0.1	GET:/api/list/get?name=wuyunfeng	no data
-2016-05-26 15:00:58	127.0.0.1	GET:/api/list/get?name=wuyunfeng	no data
+2016-05-26 21:52:48	127.0.0.1	GET:/api/list/get?name=wuyunfeng	no data
+2016-05-26 21:53:01	127.0.0.1	GET:/api/list/get?age=30&name=wuyunfeng	no data
+2016-05-26 21:53:01	127.0.0.1	POST:/api/list/post	age=30&name=wuyunfeng
