@@ -18,24 +18,29 @@ class Response
 
     static function make($response)
     {
+        ob_start();
+        $responseContent = '';
         if (is_array($response)) {
             if (isset($response['format'])) {
                 if ($response['format'] === Response::FORMAT_JSON) {
+                    header("Content-Type: application/json");
                     if (isset($response['response'])) {
                         $content = $response['response'];
                         if (is_array($content)) {
-                            echo json_encode($content);
-                            return;
+                            $responseContent = json_encode($content);
                         }
                     }
                 }
             }
         } elseif (is_string($response)) {
-            echo $response;
-            return;
+            header("Content-Type: text/plain");
+            $responseContent =  $response;
         } elseif (is_callable($response)) {
-            $resp = call_user_func($response);
-            echo $resp;
+            header("Content-Type: text/plain");
+            $responseContent = call_user_func($response);
         }
+        header("Content-Length: " . strlen($responseContent));
+        echo $responseContent;
+        ob_end_flush();
     }
 }
