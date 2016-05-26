@@ -21,12 +21,18 @@ class MobileAPIController extends BaseController
 
     function executePrintGetAction()
     {
-        echo json_encode($_GET);
+        Response::make(array(
+            'format' => Response::FORMAT_JSON,
+            'response' => $_GET
+        ));
     }
 
     function executePrintPostAction()
     {
-        echo json_encode($_POST);
+        Response::make(array(
+            'format' => Response::FORMAT_JSON,
+            'response' => $_GET
+        ));
     }
 
 }

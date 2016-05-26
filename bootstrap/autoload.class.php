@@ -21,6 +21,7 @@ class autoload
         $controller_dir = BASE_PATH . 'controller/';
         $include_dir = BASE_PATH . 'include/';
         $include_class_dir = BASE_PATH . 'include/' . 'class/';
+        $view_class_dir = BASE_PATH . 'view/';
         if (file_exists($bootstrap_dir . $fileName)) {
             include_once($bootstrap_dir . $fileName);
         } elseif (file_exists($config_dir . $fileName)) {
@@ -31,6 +32,8 @@ class autoload
             include_once $include_dir . $fileName;
         } elseif (file_exists($include_class_dir . $fileName)) {
             include_once $include_class_dir . $fileName;
+        } elseif (file_exists($view_class_dir . $fileName)) {
+            include_once $view_class_dir . $fileName;
         } else {
             include_once $include_class_dir . 'RunException.class.php';
             throw new RunException(9002, 500, "Server Error: autoload class failure!");
