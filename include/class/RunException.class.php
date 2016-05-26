@@ -21,7 +21,6 @@ class RunException extends RuntimeException implements JsonSerializable
         $this->message = $message;
         $this->code = $code;
         $this->statusCode = $statusCode;
-
     }
 
     function jsonSerialize()

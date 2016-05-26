@@ -12,7 +12,7 @@
  */
 class StackTrace
 {
-    function print_stack_trace()
+    static function printStackTrace()
     {
         $array = debug_backtrace();
         unset($array[0]);

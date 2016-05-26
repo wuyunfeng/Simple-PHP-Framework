@@ -31,7 +31,7 @@ class MobileAPIController extends BaseController
     {
         Response::make(array(
             'format' => Response::FORMAT_JSON,
-            'response' => $_GET
+            'response' => $_POST
         ));
     }
 
