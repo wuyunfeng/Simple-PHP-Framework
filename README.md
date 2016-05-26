@@ -55,7 +55,7 @@
 现在，你要开发属于你自己的业务了：
 
 
-   1. 将你喜欢的/list/get写在route.php中，叫｀路由｀步骤，就是找到你要执行的代码
+   * 将你喜欢的/list/get写在route.php中，叫｀路由｀步骤，就是找到你要执行的代码
    
    
    			return array(
@@ -72,7 +72,7 @@
 					);
 
 
-2. 自定义你自己的控制器，如果你需要打日志，可以直接继承｀BaseController｀
+* 自定义你自己的控制器，如果你需要打日志，可以直接继承｀BaseController｀
 
 
 		class MobileAPIController extends BaseController
@@ -104,7 +104,7 @@
 		
 
 
-3. Response提供简单的输出封装，第2步中对输出进行｀Json｀序列化封装，如果你懂PHP那么一看明了，😄。如果不懂可以边查边学。
+* Response提供简单的输出封装，第2步中对输出进行｀Json｀序列化封装，如果你懂PHP那么一看明了，😄。如果不懂可以边查边学。
 
 
 ##Finally
