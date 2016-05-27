@@ -24,7 +24,7 @@ class Application
         if (count($paths) != 2) {
             throw new RunException(9001, 400, "Please Check Your Request Path :" . $_SERVER['REQUEST_URI']);
         }
-        $routes = include(BASE_PATH . "config/route.php");
+//        $routes = include(BASE_PATH . "config/route.php");
         $method = $_SERVER['REQUEST_METHOD'];
         if (!array_key_exists($method, $routes)) {
             throw new RunException(9001, 400, "Please Check Your Request Method :" . $_SERVER['REQUEST_METHOD']);

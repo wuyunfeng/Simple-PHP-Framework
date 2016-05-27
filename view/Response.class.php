@@ -28,13 +28,15 @@ class Response
                         $content = $response['response'];
                         if (is_array($content)) {
                             $responseContent = json_encode($content);
+                        } elseif (is_object($response) && ($response instanceof JsonSerializable)) {
+                            $responseContent = $response;
                         }
                     }
                 }
             }
         } elseif (is_string($response)) {
             header("Content-Type: text/plain");
-            $responseContent =  $response;
+            $responseContent = $response;
         } elseif (is_callable($response)) {
             header("Content-Type: text/plain");
             $responseContent = call_user_func($response);
