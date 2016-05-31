@@ -29,6 +29,9 @@
         		deny all;
     		}
 		}
+
+*`note`*: "/path/to/simple-php-webapp/public" 这个路径是指向你`git clone` 工程根目录的`public`目录，`logs` 和 `upload`文件夹需要修改权限，否则日志和上传文件无法写入，命令 `chmod 666 logs/` `chmod 666 upload/`
+
 在这个配置文件中，我们通过`try_files`指令，将收到的请求重定向至`index.php`，然后启动nginx,mac 下如下：
 		
 		sudo nginx

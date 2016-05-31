@@ -19,7 +19,8 @@ class autoload
             BASE_PATH . 'controller/',
             BASE_PATH . 'include/',
             BASE_PATH . 'include/class/',
-            BASE_PATH . 'view/'
+            BASE_PATH . 'view/',
+            BASE_PATH . 'model/'
         );
         $fileName = $className . '.class.php';
         foreach ($classMap as $path) {
