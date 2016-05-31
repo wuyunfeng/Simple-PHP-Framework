@@ -3,17 +3,16 @@
  * ***********************************
  * ***** simple-php-webapp *****
  * ***********************************
- *   database.php
+ *   redis.php
  * Author: wuyunfeng
- * Date: 16/5/26
- * Time: 上午11:19
+ * Date: 16/5/31
+ * Time: 下午2:38
  * Email: wuyunfeng@126.com
  */
+
 return [
-    'host' => '127.0.0.1',
-    'port' => 3306,
+    'host' => '*.*.*.*',
+    'port' => 6379,
     'user' => 'root',
     'password' => '*',
-    'database' => 'project',
-    'charset' => 'utf-8'
 ];

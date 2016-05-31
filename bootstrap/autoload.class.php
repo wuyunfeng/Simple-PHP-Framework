@@ -20,7 +20,8 @@ class autoload
             BASE_PATH . 'include/',
             BASE_PATH . 'include/class/',
             BASE_PATH . 'view/',
-            BASE_PATH . 'model/'
+            BASE_PATH . 'model/',
+            BASE_PATH . 'component/'
         );
         $fileName = $className . '.class.php';
         foreach ($classMap as $path) {
