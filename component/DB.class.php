@@ -65,11 +65,6 @@ class DB
         throw new RunException(9001, 500, "singlton forbidden clone" . __CLASS__ . __LINE__);
     }
 
-    public function insert($table, $row, $option = '')
-    {
-
-    }
-
     /**
      *
      * ```php
@@ -86,7 +81,7 @@ class DB
      *           );
      * //conds数组用于构建WHERE子句，每个元素是一个条件，使用AND进行拼接。如果某元素是key-value型，则会根据value的类型进行自动转码
      * $conds = array(
-     *              'a.name = ' => 'Robin Li', // 字符串，自动转码并加引号
+     *              'a.name = ' => 'john', // 字符串，自动转码并加引号
      *              'b.id >' => 1000,          // 数字，不作处理
      *              'b.isok != ' => NULL,      // NULL
      *              'b.count > 100'            // 非key-value型
@@ -101,14 +96,15 @@ class DB
      *              'ORDER BY b.id',
      *              'LIMIT 5'
      *           );
+     * ```
      * appends数组用于设置SQL的后置操作，具体选项参见MySQL手册
      * @param mixed $table 数据表列表，可以是数组或者字符串
      * @param mixed $fields 字段列表，可以是数组或者字符串
      * @param null $cons 条件列表，可以是数组或者字符串
      * @param null $option 选项列表，可以是数组或者字符串
      * @param null $append 结尾操作列表，可以是数组或者字符串
-     *
-     * @return mixed  成功返回个数,失败返回false
+     * @param $option 返回结果选项:数组或关联数组
+     * @return mixed  成功返回结果,失败返回false
      *
      */
     public function select($table, $fields = '*', $cons = null, $option = null,
@@ -139,18 +135,197 @@ class DB
             }
         }
         $mysqliResult = mysqli_query($this->db, $executeQuery, MYSQLI_STORE_RESULT);
+        $errno = mysqli_errno($this->db);
+        if ($errno) {
+            $errmsg = mysqli_error($this->db);
+            $mysqliResult->free();
+            return ['errno' => $errno, 'errormsg' => $errmsg];
+        }
         if (!$mysqliResult) {
             return false;
         } else {
             switch ($fetchType) {
                 case DB::FETCH_ASSOC:
-                    return $mysqliResult->fetch_assoc();
+                    $result = $mysqliResult->fetch_all(MYSQLI_ASSOC);
+                    var_dump($mysqliResult->num_rows);
+                    break;
                 default:
-                    return $mysqliResult->fetch_array();
+                    $result = $mysqliResult->fetch_all(MYSQLI_NUM);
             }
+            @$mysqliResult->free();
+            return $result;
         }
     }
 
+    /**
+     * @param mixed $table
+     * @param string $fields
+     * @param null $cons
+     * @param null $option
+     * @param null $append
+     * @param int $fetchType
+     * @return array|bool|int
+     */
+    public function selectCount($table, $fields = '*', $cons = null, $option = null,
+                                $append = null, $fetchType = DB::FETCH_ASSOC)
+    {
+        $assembleFields = $this->assembleParameter($fields);
+        $executeQuery = 'select ';
+        $executeQuery .= $assembleFields;
+
+        $assembleTable = $this->assembleParameter($table);
+        $executeQuery .= ' from ' . $assembleTable;
+        if (isset($cons)) {
+            $assembleCons = $this->assembleCondition($cons);
+            if (strlen($assembleCons)) {
+                $executeQuery .= ' where ' . $assembleCons;
+            }
+        }
+        if (isset($option)) {
+            $assembleOptions = $this->assembleOptions($option);
+            if (strlen($assembleOptions)) {
+                $executeQuery .= $assembleOptions;
+            }
+        }
+        if (isset($append)) {
+            $assembleAppend = $this->assembleOptions($append);
+            if (strlen($assembleAppend)) {
+                $executeQuery .= $assembleAppend;
+            }
+        }
+        $mysqliResult = mysqli_query($this->db, $executeQuery, MYSQLI_STORE_RESULT);
+        $errno = mysqli_errno($this->db);
+        if ($errno) {
+            $errmsg = mysqli_error($this->db);
+            $mysqliResult->free();
+            return ['errno' => $errno, 'errormsg' => $errmsg];
+        }
+        if (!$mysqliResult) {
+            return false;
+        } else {
+            $ret = $mysqliResult->num_rows;
+            $mysqliResult->free();
+            return $ret;
+        }
+    }
+
+    /**
+     *
+     * INSERT INTO table (a,b,c) VALUES (1,2,4) ON DUPLICATE KEY UPDATE c=values(c);
+     *
+     * @param string $table 数据库表
+     * @param mixed $row 插入的数据3
+     * @param string $option reserverd paramter
+     * @param string $onDup ON DUPLICATE KEY UPDATE
+     *
+     * @return array if success return [result, id], or return [errno, errormsg]
+     *
+     */
+    public function insert($table, $row, $option = '', $onDup = null)
+    {
+        $executeSQLInsert = 'insert into ';
+        if (is_string($row)) {
+            $executeSQLInsert .= $row;
+        } elseif (is_array($row)) {
+            $executeSQLInsert .= $this->buildInsertParams($table, $row);
+        }
+
+        if (isset($onDup)) {
+            $executeSQLInsert .= ' ON ' . $onDup;
+        }
+
+        $isSuccess = mysqli_query($this->db, $executeSQLInsert);
+        $errno = mysqli_errno($this->db);
+        if ($errno) {
+            $errmsg = mysqli_error($this->db);
+            return ['errno' => $errno, 'errormsg' => $errmsg];
+        }
+        $result['result'] = $isSuccess;
+        if ($isSuccess) {
+            $insertId = mysqli_insert_id($this->db);
+            $result['id'] = $insertId;
+        }
+        return $result;
+    }
+
+    /**
+     *```php
+     * $table = 'a'
+     * $conds = array(
+     *              'a.name = ' => 'Robin Li', // 字符串，自动转码并加引号
+     *              'a.id >' => 1000,          // 数字，不作处理
+     *              'a.count > 100'            // 非key-value型
+     *          );
+     *```
+     * @param string $table 目标数据库表
+     * @param mixed $cond 条件语句
+     * @return array if success [result, count], or [errno, errmsg]
+     */
+    public function delete($table, $cond = null)
+    {
+        $deleteSQLStatement = 'delete from ' . $table;
+        $assembleCond = $this->assembleCondition($cond);
+        $deleteSQLStatement .= ' where ' . $assembleCond;
+        $isSuccess = mysqli_query($this->db, $deleteSQLStatement);
+        $errno = mysqli_errno($this->db);
+        if ($errno) {
+            $errmsg = mysqli_error($this->db);
+            return ['errno' => $errno, 'errormsg' => $errmsg];
+        }
+        $result['result'] = $isSuccess;
+        if ($isSuccess) {
+            $result['count'] = mysqli_affected_rows($this->db);
+        }
+        return $result;
+    }
+
+    /**
+     *```php
+     *
+     * $table = 'a';
+     *
+     * $rows = array(
+     *              'a.name' => 'john'
+     *          );
+     *
+     * $conds = array(
+     *              'a.name = ' => 'john', // 字符串，自动转码并加引号
+     *              'a.id >' => 1000,          // 数字，不作处理
+     *              'a.count > 100'            // 非key-value型
+     *          );
+     * ```
+     * @param string $table 数据库表名
+     * @param array $rows update key => value
+     * @param mixed $conds where 条件
+     * @return mixed array if success return [result, id], or return [errno, errormsg]
+     */
+    public function update($table, $rows, $conds = null)
+    {
+        if (!$rows || !is_array($rows)) {
+            return false;
+        }
+        $updateSQLStatement = 'update ' . $table;
+        if ($rows) {
+            $updateSQLStatement .= ' SET ';
+            $updateSQLStatement .= $this->buildUpdateParams($rows);
+        }
+
+        if (isset($conds) && count($conds) > 0) {
+            $updateSQLStatement .= ' where ';
+            $updateSQLStatement .= $this->assembleCondition($conds);
+        }
+        $isSuccess = mysqli_query($this->db, $updateSQLStatement);
+        $errno = mysqli_errno($this->db);
+        if ($errno) {
+            $errmsg = mysqli_error($this->db);
+            return ['errno' => $errno, 'errormsg' => $errmsg];
+        }
+        $result['result'] = $isSuccess;
+        if ($isSuccess) {
+            $result['count'] = mysqli_affected_rows($this->db);
+        }
+        return $result;
+    }
 
     private function assembleParameter($param)
     {
@@ -174,11 +349,11 @@ class DB
         } elseif (is_array($cons)) {
             foreach ($cons as $key => $value) {
                 $result .= $key;
-                $result .= ' = ';
+                $result .= '=';
                 //需要特殊处理为String类型
                 if (is_string($value)) {
                     $result .= '"';
-                    $result .= $value;
+                    $result .= @mysqli_escape_string($this->db, $value);
                     $result .= '"';
                 } else {
                     $result .= $value;
@@ -204,5 +379,52 @@ class DB
             throw new RunException(9001, 500, "the option of table incorrect" . __CLASS__ . __LINE__);
         }
         return $assembleOption;
+    }
+
+    private function buildInsertParams($table, $row)
+    {
+        $builder = $table . ' (';
+        $builderValue = '(';
+        foreach ($row as $key => $value) {
+            $builder .= $key;
+            if (is_string($value)) {
+                $builderValue .= '"';
+                $builderValue .= mysqli_escape_string($this->db, $value);
+                $builderValue .= '"';
+            } else {
+                $builderValue .= $value;
+            }
+            unset($row[$key]);
+            if (count($row)) {
+                $builder .= ', ';
+                $builderValue .= ', ';
+            } else {
+                $builder .= ' )';
+                $builderValue .= ' )';
+            }
+        }
+        $sqlPart = $builder . ' VALUES ' . $builderValue;
+        return $sqlPart;
+    }
+
+    private function buildUpdateParams($rows)
+    {
+        $builder = '';
+        foreach ($rows as $key => $value) {
+            $builder .= $key;
+            $builder .= '=';
+            if (is_string($value)) {
+                $builder .= '"';
+                $builder .= mysqli_escape_string($this->db, $value);
+                $builder .= '"';
+            } else {
+                $builder .= $value;
+            }
+            unset($rows[$key]);
+            if (count($rows) > 0) {
+                $builder .= ', ';
+            }
+        }
+        return $builder;
     }
 }

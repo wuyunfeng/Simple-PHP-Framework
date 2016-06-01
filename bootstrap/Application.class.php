@@ -18,7 +18,7 @@ class Application
         $uri = strtok($uri, '?');
         $paths = explode('/', $uri);
         if ($paths[0] !== "api") {
-            throw new RunException(9000, 404, "Request Version is wrong!");
+            throw new RunException(9000, 404, "RequestUri /api/*/*");
         }
         unset($paths[0]);
         if (count($paths) != 2) {
