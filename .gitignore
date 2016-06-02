@@ -4,3 +4,4 @@
 upload/*.*
 logs/*.txt
 UnitTest.php
+config/database.php
