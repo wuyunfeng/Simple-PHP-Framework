@@ -21,9 +21,10 @@ class DB
 
     private function __construct()
     {
-        $this->config = @include_once(UNIT_BASE_PATH . "config/" . "database.php");
+        $this->config = @include_once(BASE_PATH . "config/" . "database.php");
         if (!$this->config) {
-            throw new RunException(9001, 500, "Server Internal Error");
+            throw new RunException(9001, 500,
+                "include database config file failure");
         }
     }
 
@@ -40,10 +41,10 @@ class DB
     {
         $charSet = 'utf-8';
         if ($config) {
-            $this->db = mysqli_connect($config['host'], $config['user'], $config['password'], $config['database'], $config['port']);
+            $this->db = @mysqli_connect($config['host'], $config['user'], $config['password'], $config['database'], $config['port']);
             isset($config['charset']) && ($charSet = $config['charset']);
         } else {
-            $this->db = mysqli_connect($this->config['host'],
+            $this->db = @mysqli_connect($this->config['host'],
                 $this->config['user'], $this->config['password'],
                 $this->config['database'], $this->config['port']);
             isset($this->config['charset']) && ($charSet = $this->config['charset']);
@@ -51,18 +52,27 @@ class DB
         }
 
         if (!$this->db) {
-            throw new RunException(9001, 500, "connect mysql failure" . __CLASS__ . __LINE__);
+            throw new RunException(9001, 500,
+                "connect mysql failure" . __CLASS__ . __LINE__);
         }
         if (mysqli_connect_errno()) {
-            throw new RunException(9001, 500, "connect mysql failure errno = " . mysqli_connect_errno()
-                . " error" . mysqli_connect_error());
+            throw new RunException(9001, 500,
+                "connect mysql failure errno");
         };
-        mysqli_query($this->db, $charSet);
+        mysqli_set_charset($this->db, $charSet);
     }
 
     public function __clone()
     {
-        throw new RunException(9001, 500, "singlton forbidden clone" . __CLASS__ . __LINE__);
+        throw new RunException(9001, 500, "singlton forbidden clone");
+    }
+
+    /**
+     * @param $database the database to use
+     */
+    public function selectDatabase($database)
+    {
+        mysqli_select_db($this->db, $database);
     }
 
     /**

@@ -11,8 +11,7 @@
  */
 
 return [
-    'host' => '*.*.*.*',
+    'host' => '127.0.0.1',
     'port' => 6379,
-    'user' => 'root',
-    'password' => '*',
+    'timeout' => 1.5,
 ];
