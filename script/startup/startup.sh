@@ -1,4 +1,5 @@
 #!/bin/bash
+#only Mac
 sudo nginx
 sudo php-fpm
 mysql.server start
