@@ -42,10 +42,13 @@ class UnitTest
         require_once UNIT_BASE_PATH . 'include/' . 'class/' . 'RunException.class.php';
         require_once UNIT_BASE_PATH . 'component/' . 'Cache.class.php';
         $cache = Cache::getInstance();
-        $cache->set('eTest', 'expireTest', 30);
+//        $cache->set('eTest', 'expireTest', 30);
         $cache->set('testArray', array('data1', 'data2', 'data3'));
         $cache->set('testHash', array('key1' => 'data1', 'key2' => 'data2', 'key3' => 'data3'));
-        var_dump($cache->get('testHash', 'key4'));
+//        $cache->delete('testArray');
+//        $cache->delete('testHash');
+//        $cache->delete('testArray', null, 'data3');
+//        $cache->delete('testHash', 'key1');
     }
 }
 

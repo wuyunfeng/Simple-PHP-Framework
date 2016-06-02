@@ -35,7 +35,7 @@ class Cache
 
     private function connect()
     {
-        $config = require_once BASE_PATH . 'config/' . 'redis.php';
+        $config = require_once UNIT_BASE_PATH . 'config/' . 'redis.php';
         if (!isset($config['host'])) {
             throw new RunException(9000, 500, 'absence host key');
         }
@@ -90,7 +90,6 @@ class Cache
             case Redis::REDIS_STRING:
                 return $this->redis->get($key);
             case Redis::REDIS_LIST:
-                var_dump($pKey);
                 if (isset($pKey)) {
                     return $this->redis->lIndex($key, intval($pKey));
                 }
@@ -107,6 +106,56 @@ class Cache
                 }
             default:
                 return false;
+        }
+    }
+
+    /**
+     * @param mixed $key 完整删除key对应内容
+     * @param null $pKey hashMap 对应的key值
+     * @param null $value list\zset\set对应的值
+     * @param int $count list 存在同样的 $value 删除 $count 个, 0 为全部删除
+     */
+    public function delete($key, $pKey = null, $value = null, $count = 0)
+    {
+        $type = $this->redis->type($key);
+        switch ($type) {
+            case Redis::REDIS_STRING:
+                $this->redis->delete($key);
+                break;
+            case Redis::REDIS_LIST: {
+                if (isset($value)) {
+                    $this->redis->lRemove($key, $value, $count);
+                } else {
+                    $this->redis->delete($key);
+                }
+                break;
+            }
+            case Redis::REDIS_SET: {
+                if (isset($value)) {
+                    $this->redis->sRemove($key, $value);
+                } else {
+                    $this->redis->delete($key);
+                }
+                break;
+            }
+            case Redis::REDIS_ZSET: {
+                if ($value) {
+                    $this->redis->zRem($key, $value);
+                } else {
+                    $this->redis->delete($key);
+                }
+                break;
+            }
+            case Redis::REDIS_HASH: {
+                if (isset($pKey)) {
+                    $this->redis->hDel($key, $pKey);
+                } else {
+                    $this->redis->delete($key);
+                }
+                break;
+            }
+            default:
+                break;
         }
     }
 
