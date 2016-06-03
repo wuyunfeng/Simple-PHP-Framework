@@ -50,7 +50,18 @@ class UnitTest
 //        $cache->delete('testArray', null, 'data3');
 //        $cache->delete('testHash', 'key1');
     }
+
+    public function testRequestClass()
+    {
+        require_once UNIT_BASE_PATH . 'component/' . 'Request.class.php';
+        $request = Request::getInstance();
+        foreach ($request as $value) {
+            echo $value;
+            echo  "\r\n";
+        }
+    }
 }
 
 $unitTest = new UnitTest();
-$unitTest->testRedisCache();
+//$unitTest->testRedisCache();
+$unitTest->testRequestClass();

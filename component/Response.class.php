@@ -16,6 +16,11 @@ class Response
     const FORMAT_PB = 0x01;
     const FORMAT_HTML = 0x02;
 
+    /**
+     *  根据FORMAT选择响应客户端格式
+     *
+     * @param string $response 返回客户端响应
+     */
     static function make($response)
     {
         ob_start();
@@ -25,6 +30,8 @@ class Response
                 if ($response['format'] === Response::FORMAT_JSON) {
                     header("Content-Type: application/json");
                     if (isset($response['response'])) {
+                        $content['error_no'] = 10000;
+                        $content['error_msg'] = 'success';
                         $content = $response['response'];
                         if (is_array($content)) {
                             $responseContent = json_encode($content);
