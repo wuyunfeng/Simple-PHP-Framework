@@ -35,7 +35,7 @@ class Response
                         $content = $response['response'];
                         if (is_array($content)) {
                             $responseContent = json_encode($content);
-                        } elseif (is_object($response) && ($response instanceof JsonSerializable)) {
+                        } elseif (is_object($content) && ($content instanceof JsonSerializable)) {
                             $responseContent = $response;
                         }
                     }

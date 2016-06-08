@@ -52,7 +52,7 @@ class Application
         }
     }
 
-    private function defaultRoute()
+    private static function defaultRoute()
     {
         return include(BASE_PATH . "config/route.php");
     }

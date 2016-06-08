@@ -33,4 +33,9 @@ class autoload
         include_once BASE_PATH . 'include/class/' . 'RunException.class.php';
         throw new RunException(9002, 500, "Server Error: autoload class failure!");
     }
+
+    public static function exceptionHandler($exception)
+    {
+        echo json_encode($exception);
+    }
 }
