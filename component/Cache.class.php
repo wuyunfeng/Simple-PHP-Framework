@@ -35,7 +35,7 @@ class Cache
 
     private function connect()
     {
-        $config = require_once UNIT_BASE_PATH . 'config/' . 'redis.php';
+        $config = require_once BASE_PATH . 'config/' . 'redis.php';
         if (!isset($config['host'])) {
             throw new RunException(9000, 500, 'absence host key');
         }
