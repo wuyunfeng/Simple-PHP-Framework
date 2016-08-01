@@ -1,6 +1,6 @@
-## [Simple-PHPRestWeb-ForMobileAPI](https://github.com/wuyunfeng/Simple-PHPRestWeb-ForMobileAPI.git)
+## [simple-php-framework](https://github.com/wuyunfeng/Simple-PHP-Framework)
 
-> 快速部署一个简单的Nginx，原生PHP小框架 给手机端App提供简单API接口，实现快速开发，不再依赖后端
+> 快速部署一个简单的Nginx，原生PHP小框架 给手机端App提供简单API接口，实现快速开发
 
 ## Fist Step
 
@@ -116,7 +116,7 @@
   
   1. mysql等 (已简单进行封装)
   
-  2. 消息队列等
+  2. 消息队列等(beanstalk)
   
   3. redis等 (已简单进行封装)
 ####激情，拥抱变化 😄

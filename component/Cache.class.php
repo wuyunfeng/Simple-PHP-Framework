@@ -35,7 +35,7 @@ class Cache
 
     private function connect()
     {
-        $config = require_once BASE_PATH . 'config/' . 'redis.php';
+        $config = require_once UNIT_BASE_PATH . 'config/' . 'redis.php';
         if (!isset($config['host'])) {
             throw new RunException(9000, 500, 'absence host key');
         }
@@ -107,6 +107,12 @@ class Cache
             default:
                 return false;
         }
+    }
+
+    public function getZSortScores() {
+        $result = $this->redis->zRevRangeByScore("zzz", 6, -1,
+            array('withscores' => TRUE, 'limit' => array(0, 2)));
+        var_dump($result);
     }
 
     /**
