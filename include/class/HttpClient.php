@@ -4,24 +4,24 @@
  * ***********************************
  * ***** simple-php-webapp *****
  * ***********************************
- *   HttpExecutor.class.php
+ *   HttpClient.php
  * Author: wuyunfeng
  * Date: 16/5/26
  * Time: 上午11:228
  * Email: wuyunfeng@126.com
  */
-class HttpExecutor
+class HttpClient
 {
     static function executeHttpGet($url, $params = array())
     {
         if (empty($url))
             return false;
-        $trans = array();
-        foreach ($params as $key => $value) {
-            $trans[] = "$key=$value";
-        }
-
-        $query = implode("&", $trans);
+//        $trans = array();
+//        foreach ($params as $key => $value) {
+//            $trans[] = "$key=$value";
+//        }
+//        $query = implode("&", $trans);
+        $query = http_build_query($params);
         if (strlen($query)) {
             $url .= '?' . $query;
         }

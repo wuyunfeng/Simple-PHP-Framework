@@ -12,21 +12,26 @@
  */
 class autoload
 {
+    const classMap = array(
+        BASE_PATH . 'bootstrap/',
+        BASE_PATH . 'controller/',
+        BASE_PATH . 'include/',
+        BASE_PATH . 'include/class/',
+        BASE_PATH . 'view/',
+        BASE_PATH . 'model/',
+        BASE_PATH . 'component/'
+    );
     static function loadClass($className)
     {
-        $classMap = array(
-            BASE_PATH . 'bootstrap/',
-            BASE_PATH . 'controller/',
-            BASE_PATH . 'include/',
-            BASE_PATH . 'include/class/',
-            BASE_PATH . 'view/',
-            BASE_PATH . 'model/',
-            BASE_PATH . 'component/'
-        );
         $fileName = $className . '.class.php';
-        foreach ($classMap as $path) {
+        foreach (static::classMap as $path) {
             if (file_exists($path . $fileName)) {
                 include_once $path . $fileName;
+                // Check to see whether the include declared the class
+                if (!class_exists($className, false)) {
+                    include_once BASE_PATH . 'include/class/' . 'RunException.class.php';
+                    throw new RunException(9002, 500, "Server Error: autoload class failure!");
+                }
                 return;
             }
         }
