@@ -4,7 +4,7 @@
  * ***********************************
  * ***** simple-php-webapp *****
  * ***********************************
- *   Response.class.php
+ *   Response.php
  * Author: wuyunfeng
  * Date: 16/5/26
  * Time: 下午2:39

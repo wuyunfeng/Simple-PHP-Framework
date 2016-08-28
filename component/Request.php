@@ -4,7 +4,7 @@
  * ***********************************
  * ***** simple-php-webapp *****
  * ***********************************
- *   Request.class.php
+ *   Request.php
  * Author: wuyunfeng
  * Date: 16/6/3
  * Time: 下午4:07

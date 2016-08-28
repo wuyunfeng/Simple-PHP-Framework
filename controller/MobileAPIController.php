@@ -4,7 +4,7 @@
  * ***********************************
  * ***** simple-php-webapp *****
  * ***********************************
- *   MobileAPIController.class.php
+ *   MobileAPIController.php
  * Author: wuyunfeng
  * Date: 16/5/26
  * Time: 上午11:19

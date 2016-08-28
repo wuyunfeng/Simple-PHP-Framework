@@ -4,7 +4,7 @@
  * ***********************************
  * ***** simple-php-webapp *****
  * ***********************************
- *   Application.class.php
+ *   Application.php
  * Author: wuyunfeng
  * Date: 16/5/26
  * Time: 上午11:32

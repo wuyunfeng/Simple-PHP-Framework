@@ -4,7 +4,7 @@
  * ***********************************
  * ***** simple-php-webapp *****
  * ***********************************
- *   Cache.class.php
+ *   Cache.php
  * Author: wuyunfeng
  * Date: 16/5/31
  * Time: 下午3:42

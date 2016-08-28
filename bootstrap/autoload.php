@@ -4,7 +4,7 @@
  * ***********************************
  * ***** simple-php-webapp *****
  * ***********************************
- *   autoload.class.php
+ *   autoload.php
  * Author: wuyunfeng
  * Date: 16/5/26
  * Time: 上午11:36
@@ -23,19 +23,19 @@ class autoload
     );
     static function loadClass($className)
     {
-        $fileName = $className . '.class.php';
+        $fileName = $className . '.php';
         foreach (static::classMap as $path) {
             if (file_exists($path . $fileName)) {
                 include_once $path . $fileName;
                 // Check to see whether the include declared the class
                 if (!class_exists($className, false)) {
-                    include_once BASE_PATH . 'include/class/' . 'RunException.class.php';
+                    include_once BASE_PATH . 'include/class/' . 'RunException.php';
                     throw new RunException(9002, 500, "Server Error: autoload class failure!");
                 }
                 return;
             }
         }
-        include_once BASE_PATH . 'include/class/' . 'RunException.class.php';
+        include_once BASE_PATH . 'include/class/' . 'RunException.php';
         throw new RunException(9002, 500, "Server Error: autoload class failure!");
     }
 

@@ -21,7 +21,7 @@ class UnitTest
 
     function testDatabase()
     {
-        require_once UNIT_BASE_PATH . 'component/' . 'DB.class.php';
+        require_once UNIT_BASE_PATH . 'component/' . 'DB.php';
         $db = DB::getInstance();
         $ret = $db->select('books', array('isbn', 'author'),
             array('title' => "Android Experts", "price" => 30.00));
@@ -39,8 +39,8 @@ class UnitTest
 
     public function testRedisCache()
     {
-        require_once UNIT_BASE_PATH . 'include/' . 'class/' . 'RunException.class.php';
-        require_once UNIT_BASE_PATH . 'component/' . 'Cache.class.php';
+        require_once UNIT_BASE_PATH . 'include/' . 'class/' . 'RunException.php';
+        require_once UNIT_BASE_PATH . 'component/' . 'Cache.php';
         $cache = Cache::getInstance();
         $cache->getZSortScores();
 //        $cache->set('eTest', 'expireTest', 30);
@@ -54,7 +54,7 @@ class UnitTest
 
     public function testRequestClass()
     {
-        require_once UNIT_BASE_PATH . 'component/' . 'Request.class.php';
+        require_once UNIT_BASE_PATH . 'component/' . 'Request.php';
         $request = Request::getInstance();
         foreach ($request as $value) {
             echo $value;

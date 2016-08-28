@@ -4,7 +4,7 @@
  * ***********************************
  * ***** simple-php-webapp *****
  * ***********************************
- *   StackTrace.class.php
+ *   StackTrace.php
  * Author: wuyunfeng
  * Date: 16/5/26
  * Time: 下午2:03

@@ -4,7 +4,7 @@
  * ***********************************
  * ***** simple-php-webapp *****
  * ***********************************
- *   BaseController.class.php
+ *   BaseController.php
  * Author: wuyunfeng
  * Date: 16/5/26
  * Time: 上午11:29

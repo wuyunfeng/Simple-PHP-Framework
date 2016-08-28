@@ -4,7 +4,7 @@
  * ***********************************
  * ***** simple-php-webapp *****
  * ***********************************
- *   SimpleLogger.class.php
+ *   SimpleLogger.php
  * Author: wuyunfeng
  * Date: 16/5/26
  * Time: 上午11:25
