@@ -40,9 +40,8 @@ class UnitTest
     public function testRedisCache()
     {
         require_once UNIT_BASE_PATH . 'include/' . 'class/' . 'RunException.php';
-        require_once UNIT_BASE_PATH . 'component/' . 'Cache.php';
-        $cache = Cache::getInstance();
-        $cache->getZSortScores();
+        require_once UNIT_BASE_PATH . 'component/' . 'Redis.php';
+        $cache = Redis::getInstance();
 //        $cache->set('eTest', 'expireTest', 30);
 //        $cache->set('testArray', array('data1', 'data2', 'data3'));
 //        $cache->set('testHash', array('key1' => 'data1', 'key2' => 'data2', 'key3' => 'data3'));
