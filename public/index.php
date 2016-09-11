@@ -14,6 +14,7 @@ date_default_timezone_set('Asia/Shanghai');
 define('BASE_PATH', dirname(__DIR__) . "/");
 define('CONTROLLER_PATH', BASE_PATH . "controller" . "/");
 define('DEBUG', true);
+define('START_TIME', microtime(true));
 require_once BASE_PATH . "bootstrap/autoload.php";
 spl_autoload_register(array('autoload', 'loadClass'));
 set_exception_handler(array('autoload', 'exceptionHandler'));
