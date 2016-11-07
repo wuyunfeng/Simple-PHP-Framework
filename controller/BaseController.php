@@ -10,7 +10,7 @@
  * Time: 上午11:29
  * Email: wuyunfeng@126.com
  */
-class BaseController
+class BaseController implements Controller
 {
     function __construct()
     {
