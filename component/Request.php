@@ -17,7 +17,7 @@
  * 获取用户请求数据
  *
  */
-class Request implements ArrayAccess, Iterator
+class Request extends Component implements ArrayAccess, Iterator
 {
     private static $request;
 

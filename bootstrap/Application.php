@@ -12,6 +12,19 @@
  */
 class Application
 {
+    private $filters = array();
+
+
+    public function addFilter($filter)
+    {
+        $filter[] = $filter;
+    }
+
+    public function filters()
+    {
+        return $this->filters;
+    }
+
     static function run()
     {
         $uri = ltrim($_SERVER['REQUEST_URI'], '/');

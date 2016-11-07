@@ -10,7 +10,7 @@
  * Time: 下午3:42
  * Email: wuyunfeng@126.com
  */
-class Cache
+class Cache extends Component
 {
     private static $instance;
 

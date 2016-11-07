@@ -10,7 +10,7 @@
  * Time: 下午3:41
  * Email: wuyunfeng@126.com
  */
-class DB
+class DB extends Component
 {
     private static $instance;
     private $config;

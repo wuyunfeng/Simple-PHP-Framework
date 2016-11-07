@@ -10,7 +10,7 @@
  * Time: 下午2:39
  * Email: wuyunfeng@126.com
  */
-class Response
+class Response extends Component
 {
     const FORMAT_JSON = 0x00;
     const FORMAT_PB = 0x01;

@@ -6,7 +6,7 @@
  * Date: 16/9/11
  * Time: 上午10:06
  */
-class Logger
+class Logger extends Component
 {
     public static function write($level, $type, $logData = array())
     {
