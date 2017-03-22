@@ -12,19 +12,23 @@
  */
 class autoload
 {
-    const classMap = array(
-        BASE_PATH . 'bootstrap/',
-        BASE_PATH . 'controller/',
-        BASE_PATH . 'include/',
-        BASE_PATH . 'include/class/',
-        BASE_PATH . 'view/',
-        BASE_PATH . 'model/',
-        BASE_PATH . 'component/'
-    );
+    static function classMap()
+    {
+        return array(
+            BASE_PATH . 'bootstrap/',
+            BASE_PATH . 'controller/',
+            BASE_PATH . 'include/',
+            BASE_PATH . 'include/class/',
+            BASE_PATH . 'view/',
+            BASE_PATH . 'model/',
+            BASE_PATH . 'component/'
+        );
+    }
+
     static function loadClass($className)
     {
         $fileName = $className . '.php';
-        foreach (static::classMap as $path) {
+        foreach (static::classMap() as $path) {
             if (file_exists($path . $fileName)) {
                 include_once $path . $fileName;
                 // Check to see whether the include declared the class
